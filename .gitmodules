@@ -1,0 +1,3 @@
+[submodule "third_party/styles"]
+	path = third_party/styles
+	url = https://github.com/dach-trier/styles
