@@ -10,7 +10,8 @@ WHERE id = $1;
 
 -- name: ListInitiatives :many
 SELECT *
-FROM initiatives
+FROM initiatives i
+WHERE (sqlc.arg(kind)::text = '' OR i.kind = sqlc.arg(kind)::text)
 LIMIT $1
 OFFSET $2;
 
