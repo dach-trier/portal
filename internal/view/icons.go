@@ -1,4 +1,4 @@
-package icons
+package view
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 
 type Icons template.Template
 
-func New() *Icons {
+func NewIcons() *Icons {
 	var tmpl *template.Template
 
 	tmpl = template.New("")
