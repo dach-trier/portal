@@ -2,7 +2,7 @@ node_modules/
 .env
 
 # generated queries
-internal/database
+database/sqlc
 
 # generated styles, scripts, and remote assets
 assets/*
