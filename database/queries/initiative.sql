@@ -10,7 +10,9 @@ WHERE id = $1;
 
 -- name: ListInitiatives :many
 SELECT *
-FROM initiatives;
+FROM initiatives
+LIMIT $1
+OFFSET $2;
 
 -- name: UpdateInitiative :one
 UPDATE initiatives

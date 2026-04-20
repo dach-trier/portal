@@ -10,7 +10,9 @@ WHERE id = $1;
 
 -- name: ListImages :many
 SELECT *
-FROM images;
+FROM images
+LIMIT $1
+OFFSET $2;
 
 -- name: UpdateImage :one
 UPDATE images

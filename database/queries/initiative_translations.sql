@@ -12,7 +12,9 @@ WHERE initiative_id = $1 AND lang = $2;
 SELECT *
 FROM initiative_translations
 WHERE initiative_id = $1
-ORDER BY lang;
+ORDER BY lang
+LIMIT $2
+OFFSET $3;
 
 -- name: UpdateInitiativeTranslation :one
 UPDATE initiative_translations
