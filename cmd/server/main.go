@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/dach-trier/env"
+	"github.com/dach-trier/portal/internal/app"
 )
 
 func main() {
@@ -18,14 +19,15 @@ func main() {
 		}
 	}
 
-	// ---
+	// --
 	// Server
-	// ---
+	// --
 
 	port := env.GetIntInRange(os.Getenv, "PORT", 8080, 1, 65535)
 
 	server := &http.Server{
-		Addr: ":" + strconv.Itoa(port),
+		Addr:    ":" + strconv.Itoa(port),
+		Handler: app.New().Router(),
 	}
 
 	log.Println("listening on :" + strconv.Itoa(port))
