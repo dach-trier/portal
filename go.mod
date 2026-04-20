@@ -11,6 +11,7 @@ require (
 	github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b
 	github.com/dach-trier/i18n v0.0.0-20260420171937-29e266b1c711
 	github.com/go-chi/chi/v5 v5.2.5
+	github.com/jackc/pgx/v5 v5.7.5
 	golang.org/x/text v0.36.0
 )
 
@@ -112,7 +113,6 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/jackc/pgx/v4 v4.18.3 // indirect
-	github.com/jackc/pgx/v5 v5.7.5 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
