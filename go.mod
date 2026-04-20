@@ -7,6 +7,8 @@ tool (
 	github.com/sqlc-dev/sqlc/cmd/sqlc
 )
 
+require github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b
+
 require (
 	cel.dev/expr v0.24.0 // indirect
 	cloud.google.com/go v0.121.6 // indirect

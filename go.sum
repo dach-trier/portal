@@ -784,6 +784,8 @@ github.com/cubicdaiya/gonp v1.0.4 h1:ky2uIAJh81WiLcGKBVD5R7KsM/36W6IqqTy6Bo6rGws
 github.com/cubicdaiya/gonp v1.0.4/go.mod h1:iWGuP/7+JVTn02OWhRemVbMmG1DOUnmrGTYYACpOI0I=
 github.com/cznic/mathutil v0.0.0-20181122101859-297441e03548 h1:iwZdTE0PVqJCos1vaoKsclOGD3ADKpshg3SRtYBbwso=
 github.com/cznic/mathutil v0.0.0-20181122101859-297441e03548/go.mod h1:e6NPNENfs9mPDVNRekM7lKScauxd5kXTr1Mfyig6TDM=
+github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b h1:wjp+fX1j342b3ghS5URpWZk9oRli7RVCHidYPgnGbJ0=
+github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b/go.mod h1:wmhCHNFiDb8EWQgPKPZ87R4I1uMWtKYs6eEygyCOiqk=
 github.com/danieljoos/wincred v1.1.2 h1:QLdCxFs1/Yl4zduvBdcHB8goaYk9RARS2SgLLRuAyr0=
 github.com/danieljoos/wincred v1.1.2/go.mod h1:GijpziifJoIBfYh+S7BbkdUTU4LfM+QnGqR5Vl2tAx0=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
