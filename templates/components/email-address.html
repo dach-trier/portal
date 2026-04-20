@@ -1,0 +1,57 @@
+{{define "components.email-address"}}
+
+{{$iconClass := ""}}
+{{$emailClass := ""}}
+{{$messageClass := ""}}
+
+{{if eq .Size "normal"}}
+{{$iconClass = "w-4"}}
+{{$messageClass = "text-sm"}}
+{{else if eq .Size "large"}}
+{{$iconClass = "w-5"}}
+{{$emailClass = "text-lg"}}
+{{end}}
+
+<div x-data="{ state: 'initial' }" class="w-fit relative flex flex-wrap gap-2 select-none group">
+    {{icon "mail" (htmlAttributes "class" $iconClass)}}
+
+    <div class="grid">
+        <span
+            x-cloak
+            class="row-1 col-1 relative bottom-px group-hover:text-gray-500 group-active:text-gray-400 transition-opacity duration-200 {{$emailClass}}"
+            :class="state === 'initial' ? 'opacity-100 cursor-pointer' : 'opacity-0 cursor-auto pointer-events-none'"
+        >
+            {{.EmailAddress}}
+        </span>
+
+        <span
+            x-cloak
+            class="row-1 col-1 relative bottom-px w-fit px-1 flex items-center rounded bg-green-500 text-white text-center font-medium transition-opacity duration-200 {{$messageClass}}"
+            :class="state === 'copied' ? 'opacity-100 cursor-pointer' : 'opacity-0 cursor-auto pointer-events-none'"
+        >
+            {{t "Copied" .Lang}}
+        </span>
+    </div>
+
+    <script>
+        document.currentScript.parentNode.addEventListener("click", function(e) {
+            const vm = Alpine.$data(e.target)
+
+            if (vm.state !== "initial") return;
+            if (!navigator.clipboard) {
+                alert('{{t "Unable to copy the email address to system clipboard" .Lang}}')
+                return;
+            }
+
+            navigator.clipboard.writeText('{{.EmailAddress}}')
+                .then(() => {
+                    vm.state = 'copied'
+                    setTimeout(() => vm.state = 'initial', 1200);
+                })
+                .catch(() => {
+                    alert('{{t "Unable to copy the email address to system clipboard" .Lang}}')
+                })
+        })
+    </script>
+</div>
+{{end}}
