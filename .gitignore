@@ -1,5 +1,8 @@
 node_modules/
 
+# generated queries
+internal/database
+
 # generated styles, scripts, and remote assets
 assets/*
 
