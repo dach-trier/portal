@@ -7,7 +7,7 @@ import (
 
 	"github.com/dach-trier/portal/database/sqlc"
 	"github.com/dach-trier/portal/internal/model"
-	"github.com/dach-trier/portal/internal/repo"
+	"github.com/dach-trier/portal/internal/query"
 )
 
 type InitiativeRepository sqlc.Queries
@@ -19,8 +19,8 @@ func NewInitiativeRepository(db sqlc.DBTX) *InitiativeRepository {
 func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 	ctx context.Context,
 	lang language.Tag,
-	filter repo.InitiativeFilter,
-	cursor repo.Cursor[string],
+	filter query.InitiativeFilter,
+	cursor query.Cursor[string],
 ) ([]model.TranslatedInitiativeWithThumbnail, error) {
 	queries := (*sqlc.Queries)(repo)
 

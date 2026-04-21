@@ -6,17 +6,14 @@ import (
 	"golang.org/x/text/language"
 
 	"github.com/dach-trier/portal/internal/model"
+	"github.com/dach-trier/portal/internal/query"
 )
-
-type InitiativeFilter struct {
-	Kind string
-}
 
 type InitiativeRepository interface {
 	ListTranslatedInitiativesWithThumbnail(
 		ctx context.Context,
 		lang language.Tag,
-		filter InitiativeFilter,
-		cursor Cursor[string],
+		filter query.InitiativeFilter,
+		cursor query.Cursor[string],
 	) ([]model.TranslatedInitiativeWithThumbnail, error)
 }

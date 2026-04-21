@@ -1,4 +1,4 @@
-package repo
+package query
 
 type Cursor[T any] struct {
 	After T
