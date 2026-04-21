@@ -23,35 +23,63 @@ func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 	cursor query.Cursor[string],
 ) ([]model.TranslatedInitiativeWithThumbnail, error) {
 	queries := (*sqlc.Queries)(repo)
+	initiatives := []model.TranslatedInitiativeWithThumbnail{}
 
-	result, err := queries.ListTranslatedInitiativesWithThumbnail(
-		ctx,
-		sqlc.ListTranslatedInitiativesWithThumbnailParams{
-			Lang:  lang.String(),
-			Kind:  filter.Kind,
-			Limit: int32(cursor.Limit),
-			After: cursor.After,
-		},
-	)
+	// --
+	// translated initiatives
+	// --
+
+	params := sqlc.ListTranslatedInitiativesParams{}
+
+	params.Lang = lang.String()
+	params.Limit = int32(cursor.Limit)
+	params.Kind = filter.Kind
+
+	if cursor.After != nil {
+		params.After.String = *cursor.After
+		params.After.Valid = true
+	}
+
+	result, err := queries.ListTranslatedInitiatives(ctx, params)
 
 	if err != nil {
 		return nil, err
 	}
 
-	initiatives := []model.TranslatedInitiativeWithThumbnail{}
+	//
 
 	for _, row := range result {
-		initiatives = append(
-			initiatives,
-			model.TranslatedInitiativeWithThumbnail{
-				ID:          row.ID,
-				Kind:        row.Kind,
-				Name:        row.Name.String,
-				Description: row.Description.String,
-				ImageID:     row.ImageID,
-				ImageUrl:    row.ImageUrl,
-			},
-		)
+		initiative := model.TranslatedInitiativeWithThumbnail{}
+
+		initiative.ID = row.ID
+		initiative.Kind = row.Kind
+		initiative.Name = row.Name.String
+		initiative.Description = row.Description.String
+
+		// --
+		// thumbnail
+		// --
+
+		params := sqlc.ListInitiativeImagesParams{
+			InitiativeID: row.ID,
+			Limit:        1,
+		}
+
+		result, err := queries.ListInitiativeImages(ctx, params)
+
+		if err != nil {
+			return nil, err
+		}
+
+		if len(result) > 0 {
+			initiative.Thumbnail =
+				&model.Image{
+					ID:  result[0].ID,
+					Url: result[0].Url,
+				}
+		}
+
+		initiatives = append(initiatives, initiative)
 	}
 
 	return initiatives, nil
