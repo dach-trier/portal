@@ -20,17 +20,17 @@ func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 	ctx context.Context,
 	lang language.Tag,
 	filter repo.InitiativeFilter,
-	pagination repo.Pagination,
+	cursor repo.Cursor[string],
 ) ([]model.TranslatedInitiativeWithThumbnail, error) {
 	queries := (*sqlc.Queries)(repo)
 
 	result, err := queries.ListTranslatedInitiativesWithThumbnail(
 		ctx,
 		sqlc.ListTranslatedInitiativesWithThumbnailParams{
-			Lang:   lang.String(),
-			Kind:   filter.Kind,
-			Limit:  int32(pagination.Limit),
-			Offset: int32(pagination.Offset),
+			Lang:  lang.String(),
+			Kind:  filter.Kind,
+			Limit: int32(cursor.Limit),
+			After: cursor.After,
 		},
 	)
 

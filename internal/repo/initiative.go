@@ -17,6 +17,6 @@ type InitiativeRepository interface {
 		ctx context.Context,
 		lang language.Tag,
 		filter InitiativeFilter,
-		pagination Pagination,
+		cursor Cursor[string],
 	) ([]model.TranslatedInitiativeWithThumbnail, error)
 }

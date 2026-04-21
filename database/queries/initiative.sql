@@ -17,6 +17,7 @@ LEFT JOIN LATERAL (
     WHERE ii.initiative_id = i.id
     LIMIT 1
 ) img ON true
-WHERE (sqlc.arg(kind)::text = '' OR i.kind = sqlc.arg(kind)::text)
-LIMIT $2
-OFFSET $3;
+WHERE (sqlc.arg(kind) ::text IS NULL OR i.kind = sqlc.arg(kind))
+AND   (sqlc.arg(after)::text IS NULL OR i.id   > sqlc.arg(after))
+ORDER BY i.id ASC
+LIMIT $2;
