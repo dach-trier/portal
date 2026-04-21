@@ -29,8 +29,8 @@ func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 		sqlc.ListTranslatedInitiativesWithThumbnailParams{
 			Lang:   lang.String(),
 			Kind:   filter.Kind,
-			Limit:  pagination.Limit,
-			Offset: pagination.Offset,
+			Limit:  int32(pagination.Limit),
+			Offset: int32(pagination.Offset),
 		},
 	)
 
