@@ -1,26 +1,22 @@
--- name: CreateInitiative :one
-INSERT INTO initiatives (id, kind)
-VALUES ($1, $2)
-RETURNING id, kind;
-
--- name: GetInitiativeByID :one
-SELECT *
-FROM initiatives
-WHERE id = $1;
-
--- name: ListInitiatives :many
-SELECT *
+-- name: ListTranslatedInitiativesWithThumbnail :many
+SELECT
+    i.id,
+    i.kind,
+    t.name,
+    t.description,
+    img.id  AS image_id,
+    img.url AS image_url
 FROM initiatives i
+LEFT JOIN initiative_translations t
+    ON  t.initiative_id = i.id
+    AND t.lang = $1
+LEFT JOIN LATERAL (
+    SELECT im.id, im.url
+    FROM initiative_images ii
+    JOIN images im ON im.id = ii.image_id
+    WHERE ii.initiative_id = i.id
+    LIMIT 1
+) img ON true
 WHERE (sqlc.arg(kind)::text = '' OR i.kind = sqlc.arg(kind)::text)
-LIMIT $1
-OFFSET $2;
-
--- name: UpdateInitiative :one
-UPDATE initiatives
-SET kind = $2
-WHERE id = $1
-RETURNING id, kind;
-
--- name: DeleteInitiative :exec
-DELETE FROM initiatives
-WHERE id = $1;
+LIMIT $2
+OFFSET $3;
