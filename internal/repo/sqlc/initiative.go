@@ -2,6 +2,7 @@ package sqlc_repo
 
 import (
 	"context"
+	"html/template"
 
 	"golang.org/x/text/language"
 
@@ -53,8 +54,8 @@ func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 
 		initiative.ID = row.ID
 		initiative.Kind = row.Kind
-		initiative.Name = row.Name.String
-		initiative.Description = row.Description.String
+		initiative.Name = template.HTML(row.Name.String)
+		initiative.Description = template.HTML(row.Description.String)
 
 		// --
 		// thumbnail
