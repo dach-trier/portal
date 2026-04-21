@@ -8,6 +8,7 @@ import (
 
 	"github.com/dach-trier/i18n"
 	"github.com/dach-trier/i18n/http"
+	"github.com/dach-trier/portal/internal/repo"
 
 	chi "github.com/go-chi/chi/v5"
 	chi_middleware "github.com/go-chi/chi/v5/middleware"
@@ -15,14 +16,17 @@ import (
 
 type App struct {
 	localization i18n.Bundle
+	repos        repo.Bundle
 }
 
-func New() *App {
+func New(repos repo.Bundle) *App {
 	app := &App{}
 
 	app.localization = i18n.NewBundle()
 	app.localization.MustLoadYaml(os.DirFS("i18n"), "de.yml", language.German)
 	app.localization.MustLoadYaml(os.DirFS("i18n"), "uk.yml", language.Ukrainian)
+
+	app.repos = repos
 
 	// --
 
