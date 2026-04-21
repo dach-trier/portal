@@ -13,5 +13,5 @@ docker run -d \
     -e POSTGRES_PASSWORD=$DB_PASS \
     -e POSTGRES_DB=$DB_NAME \
     -p $DB_PORT:5432 \
-    -v ./volumes/postgres:/var/lib/postgresql/18/data \
+    -v ./volumes/postgres:/var/lib/postgresql/18/docker \
     postgres:18.3-alpine3.22
