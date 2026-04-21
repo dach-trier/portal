@@ -1,0 +1,126 @@
+{{define "layout.base"}}
+<!doctype html>
+<html lang="{{.Lang}}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{{.Title}}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        <link rel="icon" href="https://public.dach-trier.com/1Qh_KB5HRRTfga6Qn8qgpVM5-_FrV9o5W" />
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+        {{if eq (env "MODE") "release"}}
+        <link rel="stylesheet" href="assets/styles.css" />
+        {{else if eq (env "MODE") "debug"}}
+        <link rel="stylesheet" href="assets/styles.css?timestamp={{now}}" />
+        {{end}}
+    </head>
+    <body ontouchstart="">
+        {{template "layout.base.header" .}}
+        {{template "layout.base.content" .}}
+        {{template "layout.base.footer" .}}
+    </body>
+</html>
+{{end}}
+
+{{define "layout.base.header"}}
+<header class="sticky z-10 top-0 w-screen h-14.5 bg-white">
+    <div class="w-[calc(100vw-42px)] max-w-300 mx-auto h-full flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            {{template "graphics.dach-logo-simplified" (htmlAttributes "class" "w-8")}}
+            <h4>{{.Title}}</h4>
+        </div>
+    </div>
+</header>
+{{end}}
+
+{{define "layout.base.footer"}}
+<footer class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-20">
+    <div class="flex flex-col gap-5 md:grid md:justify-between md:gap-y-5 md:gap-x-0">
+        <div class="w-full h-0.5 bg-black md:col-span-3"></div>
+
+        <div class="flex flex-col gap-5">
+            <h4>{{t "Contact" .Lang}}</h4>
+
+            <div class="flex flex-col gap-2">
+                {{template "components.email-address"
+                    (dict "Lang"         .Lang
+                          "Size"         "normal"
+                          "EmailAddress" "info@dach-trier.com")
+                }}
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+            <h4>{{t "Socials" .Lang}}</h4>
+
+            <div class="row-3 flex flex-col gap-2">
+                {{template "layout.base.footer.link"
+                    (dict "Icon"  "instagram"
+                          "Label" "Instagram"
+                          "Href"  "https://www.instagram.com/dach_ukr_de")
+                }}
+
+                {{template "layout.base.footer.link"
+                    (dict "Icon"  "facebook"
+                          "Label" "Facebook"
+                          "Href"  "https://www.facebook.com/DACH.ukr.de")
+                }}
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-5">
+            <h4>{{t "Legal" .Lang}}</h4>
+
+            <div class="flex flex-col gap-2">
+                {{template "layout.base.footer.link"
+                    (dict "Icon"  "document"
+                          "Label" (t "Charter" .Lang)
+                          "Href"  "https://public.dach-trier.com/1jjHQUrTbQJAWEl3c9Mfs9o1YAZpwQLwI")
+                }}
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2 select-none">
+                        {{icon "thumbs-up" (htmlAttributes "class" "w-4")}}
+                        {{t "Recommendations" .Lang}}
+                    </div>
+
+                    <div class="list-disc flex flex-col gap-1 pl-6">
+                        {{template "layout.base.footer.link"
+                            (dict "Icon"  "document"
+                                  "Label" "Stadtverwaltung Trier"
+                                  "Href"  "https://public.dach-trier.com/1DbdagGXSb-5apvCzfMeRZAP8Ur8cofoG")
+                        }}
+
+                        {{template "layout.base.footer.link"
+                            (dict "Icon"  "document"
+                                  "Label" "Trier Tourismus und Marketing"
+                                  "Href"  "https://public.dach-trier.com/11K_yNOuA0hZF5qKZR0el96ieGQ_erZzv")
+                        }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <label class="my-5 md:my-10 row-4 md:col-span-3 text-center">
+            {{t "(c) %s DACH e.V. Trier. All rights reserved" .Lang (currentYear)}}
+        </label>
+    </div>
+</footer>
+{{end}}
+
+{{define "layout.base.footer.link"}}
+<div
+    x-data
+    @click="window.open('{{.Href}}', '_blank')"
+    class="w-fit relative flex flex-wrap gap-2 cursor-pointer select-none group"
+>
+    {{if eq .Icon "document"}}
+    {{icon .Icon (htmlAttributes "class" "w-3.5")}}
+    {{else}}
+    {{icon .Icon (htmlAttributes "class" "w-4")}}
+    {{end}}
+
+    <span class="group-hover:text-gray-500 group-active:text-gray-400">{{.Label}}</span>
+</div>
+{{end}}
