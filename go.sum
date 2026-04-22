@@ -788,6 +788,8 @@ github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b h1:wjp+fX1j342b3ghS
 github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b/go.mod h1:wmhCHNFiDb8EWQgPKPZ87R4I1uMWtKYs6eEygyCOiqk=
 github.com/dach-trier/i18n v0.0.0-20260420171937-29e266b1c711 h1:EPnmWrmuWckaDJ9e4mlZTlTmgZdDHVbgwatNyQR3Ano=
 github.com/dach-trier/i18n v0.0.0-20260420171937-29e266b1c711/go.mod h1:lrR3xOvRRygXji1baNpRlTp77dQRLxb8MLtaAJSNrc0=
+github.com/dach-trier/template v0.0.0-20260420154705-525574ac028e h1:7gYZhWa5Kqn62+P19pu5qaoU5GBe5fkkfmvo3oXOoMA=
+github.com/dach-trier/template v0.0.0-20260420154705-525574ac028e/go.mod h1:92AlPXZ719VWCz227PfoJtwIfUsvFVyl4Wb4Xns72pI=
 github.com/danieljoos/wincred v1.1.2 h1:QLdCxFs1/Yl4zduvBdcHB8goaYk9RARS2SgLLRuAyr0=
 github.com/danieljoos/wincred v1.1.2/go.mod h1:GijpziifJoIBfYh+S7BbkdUTU4LfM+QnGqR5Vl2tAx0=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

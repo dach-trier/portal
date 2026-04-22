@@ -10,6 +10,7 @@ tool (
 require (
 	github.com/dach-trier/env v0.0.0-20260419155526-4739d4db7e8b
 	github.com/dach-trier/i18n v0.0.0-20260420171937-29e266b1c711
+	github.com/dach-trier/template v0.0.0-20260420154705-525574ac028e
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/golang-migrate/migrate/v4 v4.19.1
 	github.com/jackc/pgx/v5 v5.7.5
