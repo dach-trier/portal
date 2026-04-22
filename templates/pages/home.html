@@ -1,0 +1,160 @@
+{{define "layout.base.content"}}
+{{template "pages.home.banner" .}}
+{{template "pages.home.hero" .}}
+{{template "pages.home.navigation" .}}
+{{template "pages.home.contact" .}}
+{{end}}
+
+{{define "pages.home.banner"}}
+<section class="w-full max-w-300 mx-auto h-62.5 xl:h-100 xl:rounded overflow-hidden">
+    <div
+        class="relative w-full h-full bg-gray-100"
+        x-data="{ activeSlide: 0 }"
+        x-init="setInterval(() => activeSlide = (activeSlide + 1) % {{len .Initiatives}}, 5000)"
+    >
+        {{range $index, $event := .Initiatives}}
+        <div
+            class="absolute top-0 left-0 w-full h-full grid"
+            x-show="activeSlide === {{$index}}"
+            x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-500"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+        >
+            <div class="relative z-0 row-1 col-1 w-full h-full bg-gray-100">
+                {{if .Thumbnail}}
+                <img class="absolute top-0 left-0 w-full h-full object-cover" src="{{.Thumbnail.Url}}" />
+                {{end}}
+            </div>
+
+            <div class="relative z-1 flex flex-col-reverse h-full row-1 col-1 p-6 ">
+                <label class="w-fit font-medium text-2xl text-shadow-lg text-white">
+                    {{.Name}}
+                </label>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</section>
+{{end}}
+
+{{define "pages.home.hero"}}
+<section class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-8 flex flex-col gap-5 md:flex-row md:justify-between md:gap-10">
+    <h1 class="text-2xl leading-9">
+        {{t "Ukrainian-German Association" .Lang}}
+    </h1>
+
+    <p class="text-lg leading-8">
+        {{t "a registered <strong>charitable organization</strong> uniting a growing community of <strong>over 60 members</strong> and driving impact through <strong>more than 100 successfully completed projects</strong> of varying scales." .Lang}}
+    </p>
+
+    <div class="flex gap-10">
+        <button
+            x-data
+            @click="document.getElementById('pages.home.contact').scrollIntoView({ behavior: 'smooth' })"
+            class="w-max h-10 flex items-center gap-2 px-3 mt-5 md:mt-0 button-blue-600"
+        >
+            {{icon "phone" (htmlAttributes "class" "w-4")}}
+            {{t "Contact" .Lang}}
+        </button>
+
+        <button
+            x-data
+            @click="window.open('https://www.paypal.com/paypalme/DACHTRIER', '_blank')"
+            class="w-max h-10 flex items-center gap-2 px-3 mt-5 md:mt-0 button-red-600"
+        >
+            {{icon "heart" (htmlAttributes "class" "w-4")}}
+            {{t "Support" .Lang}}
+        </button>
+    </div>
+</section>
+{{end}}
+
+{{define "pages.home.navigation"}}
+<section class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-20">
+    <h1 class="text-2xl col-span-full">
+        {{t "Our Initiatives" .Lang}}
+    </h1>
+
+    <div class="grid gap-10 grid-cols-1 md:grid-cols-2 mt-5">
+        {{template "pages.home.navigation.card"
+            (dict "Icon"        "project"
+                  "Background"  "bg-green-100"
+                  "Foreground"  "text-green-500"
+                  "Heading"     (t "Projects" .Lang)
+                  "Description" "The first Ukrainian school in Trier youth camp, art workshop, ..."
+                  "Href"        "/initiatives?kind=project"
+                  "Lang"        .Lang)
+        }}
+
+        {{template "pages.home.navigation.card"
+            (dict "Icon"        "event"
+                  "Background"  "bg-amber-100"
+                  "Foreground"  "text-amber-500"
+                  "Heading"     (t "Events" .Lang)
+                  "Description" "Concerts exhibitions, lectures, volunteer activities, ..."
+                  "Href"        "/initiatives?kind=event"
+                  "Lang"        .Lang)
+        }}
+    </div>
+</section>
+{{end}}
+
+{{define "pages.home.navigation.card"}}
+<div class="w-full flex flex-col lg:flex-row gap-8 p-6 border border-gray-200 rounded even:justify-self-end">
+    <div class="row-span-2 w-28 min-w-28 h-28 min-h-28 rounded border border-gray-200 flex justify-center items-center {{.Background}} {{.Foreground}}">
+        {{icon .Icon (htmlAttributes "class" "w-20 h-20")}}
+    </div>
+
+    <div>
+        <h2 class="text-xl">
+            {{.Heading}}
+        </h2>
+
+        <p class="mt-4 text-lg">
+            {{.Description}}
+        </p>
+
+        <a href="{{.Href}}" class="w-fit button-blue-600 px-2 py-1 mt-6">
+            {{t "Learn more" .Lang}}
+        </a>
+    </div>
+</div>
+{{end}}
+
+{{define "pages.home.contact"}}
+<section
+    id="pages.home.contact"
+    class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 scroll-mt-20"
+>
+    <div class="flex flex-col gap-5">
+        <h1 class="font-semibold text-2xl">
+            {{t "Contact Us" .Lang}}
+        </h1>
+
+        <p class="text-lg leading-8">
+            {{t "Have questions? Send us an email and we’ll get back to you as soon as possible." .Lang}}
+        </p>
+
+        {{template "components.email-address"
+            (dict "Lang"         .Lang
+                  "Size"         "large"
+                  "EmailAddress" "info@dach-trier.com")
+        }}
+    </div>
+
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d405.92673995237664!2d6.635200092803947!3d49.75833494084496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47957c97757bce3b%3A0xe9a1cf8ce8b65e33!2sPauluspl.%203%2C%2054290%20Trier!5e0!3m2!1sen!2sde!4v1775749882936!5m2!1sen!2sde"
+        width="100%"
+        height="300"
+        loading="lazy"
+        allowfullscreen=""
+        style="outline:0;"
+        class="border border-gray-200 shadow-md"
+        referrerpolicy="no-referrer-when-downgrade"
+    >
+    </iframe>
+</section>
+{{end}}

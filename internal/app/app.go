@@ -25,6 +25,7 @@ type App struct {
 	localization i18n.Bundle
 	repos        repo.Bundle
 	views        struct {
+		home        *view.Home
 		initiatives *view.InitiativeListing
 	}
 }
@@ -41,6 +42,8 @@ func New(repos repo.Bundle) *App {
 	// --
 
 	icons := view.NewIcons()
+
+	app.views.home = view.NewHome(icons, app.localization)
 	app.views.initiatives = view.NewInitiativeListing(icons, app.localization)
 
 	return app
@@ -74,9 +77,61 @@ func (app *App) Router() http.Handler {
 	}))
 
 	router.Get("/assets/*", http.StripPrefix("/assets/", assets).ServeHTTP)
+	router.Get("/", app.home)
 	router.Get("/initiatives", app.initiatives)
 
 	return router
+}
+
+func (app *App) home(w http.ResponseWriter, r *http.Request) {
+	html := bytes.NewBuffer(make([]byte, 0, 1024))
+	lang := r.Context().Value("lang").(language.Tag)
+
+	// --
+	// load initiatives
+	// --
+
+	filter := query.InitiativeFilter{}
+	cursor := query.Cursor[string]{Limit: math.MaxInt32}
+
+	initiatives, err := app.repos.Initiatives.ListTranslatedInitiativesWithThumbnail(
+		context.Background(),
+		lang,
+		filter,
+		cursor,
+	)
+
+	if err != nil {
+		http.Error(w, "failed to load initiatives", http.StatusInternalServerError)
+		log.Printf("failed to load initiatives\n")
+		log.Printf("reason: %v\n", err)
+		return
+	}
+
+	// --
+	// render
+	// --
+
+	err = app.views.home.RenderPage(html, lang, initiatives)
+
+	if err != nil {
+		http.Error(w, "failed to render home page", http.StatusInternalServerError)
+		log.Printf("failed to render home page\n")
+		log.Printf("reason: %v\n", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html;charset=utf-8")
+	w.Header().Set("Content-Length", strconv.Itoa(html.Len()))
+	w.WriteHeader(http.StatusOK)
+
+	_, err = html.WriteTo(w)
+
+	if err != nil {
+		log.Printf("failed writing response\n")
+		log.Printf("reason: %v\n", err)
+		return
+	}
 }
 
 func (app *App) initiatives(w http.ResponseWriter, r *http.Request) {
