@@ -1,23 +1,29 @@
 {{define "layout.base.main"}}
-<section class="mt-6 mb-20 container container-gutter grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-    {{range .Initiatives}}
-    <div class="flex flex-col gap-6">
-        <div class="flex-none w-full h-55 bg-gray-100 rounded overflow-hidden">
-            {{if .Thumbnail}}
-            <img src="{{.Thumbnail.Url}}" class="w-full h-full object-cover flex-none" />
-            {{end}}
-        </div>
+<main class="mt-6 mb-20 container container-gutter">
+    <h1 class="text-xl">
+        {{t "Projects" .Lang}}
+    </h1>
 
-        <div class="mx-2">
-            <h1 class="text-2xl">
-                {{.Name}}
-            </h1>
+    <section class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+        {{range .Initiatives}}
+        <div class="flex flex-col gap-6">
+            <div class="flex-none w-full h-55 bg-gray-100 rounded overflow-hidden">
+                {{if .Thumbnail}}
+                <img src="{{.Thumbnail.Url}}" class="w-full h-full object-cover flex-none" />
+                {{end}}
+            </div>
 
-            <p class="text-lg mt-5 text-justify">
-                {{.Description}}
-            </p>
+            <div class="mx-2">
+                <h1 class="text-2xl">
+                    {{.Name}}
+                </h1>
+
+                <p class="text-lg mt-5 text-justify">
+                    {{.Description}}
+                </p>
+            </div>
         </div>
-    </div>
-    {{end}}
-</section>
+        {{end}}
+    </section>
+</main>
 {{end}}
