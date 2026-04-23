@@ -56,7 +56,7 @@ func main() {
 	}
 
 	repos := repo.Bundle{
-		Initiatives: sqlc_repo.NewInitiativeRepository(pool),
+		Projects: sqlc_repo.NewProjectRepository(pool),
 	}
 
 	// --

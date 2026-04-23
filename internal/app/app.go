@@ -25,8 +25,8 @@ type App struct {
 	localization i18n.Bundle
 	repos        repo.Bundle
 	views        struct {
-		home        *view.Home
-		initiatives *view.InitiativeListing
+		home     *view.Home
+		projects *view.ProjectListing
 	}
 }
 
@@ -44,7 +44,7 @@ func New(repos repo.Bundle) *App {
 	icons := view.NewIcons()
 
 	app.views.home = view.NewHome(icons, app.localization)
-	app.views.initiatives = view.NewInitiativeListing(icons, app.localization)
+	app.views.projects = view.NewProjectListing(icons, app.localization)
 
 	return app
 }
@@ -78,7 +78,7 @@ func (app *App) Router() http.Handler {
 
 	router.Get("/assets/*", http.StripPrefix("/assets/", assets).ServeHTTP)
 	router.Get("/", app.home)
-	router.Get("/initiatives", app.initiatives)
+	router.Get("/projects", app.projects)
 
 	return router
 }
@@ -88,18 +88,18 @@ func (app *App) home(w http.ResponseWriter, r *http.Request) {
 	lang := r.Context().Value("lang").(language.Tag)
 
 	// --
-	// load initiatives
+	// load projects
 	// --
 
-	initiatives, err := app.repos.Initiatives.ListTranslatedInitiativesWithThumbnail(
+	projects, err := app.repos.Projects.ListLocalizedProjectsWithThumbnail(
 		context.Background(),
 		lang,
 		query.Cursor[string]{Limit: math.MaxInt32},
 	)
 
 	if err != nil {
-		http.Error(w, "failed to load initiatives", http.StatusInternalServerError)
-		log.Printf("failed to load initiatives\n")
+		http.Error(w, "failed to load projects", http.StatusInternalServerError)
+		log.Printf("failed to load projects\n")
 		log.Printf("reason: %v\n", err)
 		return
 	}
@@ -108,7 +108,7 @@ func (app *App) home(w http.ResponseWriter, r *http.Request) {
 	// render
 	// --
 
-	err = app.views.home.RenderPage(html, lang, initiatives)
+	err = app.views.home.RenderPage(html, lang, projects)
 
 	if err != nil {
 		http.Error(w, "failed to render home page", http.StatusInternalServerError)
@@ -130,24 +130,24 @@ func (app *App) home(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *App) initiatives(w http.ResponseWriter, r *http.Request) {
+func (app *App) projects(w http.ResponseWriter, r *http.Request) {
 	html := bytes.NewBuffer(make([]byte, 0, 1024))
 	lang := r.Context().Value("lang").(language.Tag)
 	// after := r.URL.Query().Get("after")
 
 	// --
-	// load initiatives
+	// load projects
 	// --
 
-	initiatives, err := app.repos.Initiatives.ListTranslatedInitiativesWithThumbnail(
+	projects, err := app.repos.Projects.ListLocalizedProjectsWithThumbnail(
 		context.Background(),
 		lang,
 		query.Cursor[string]{Limit: math.MaxInt32},
 	)
 
 	if err != nil {
-		http.Error(w, "failed to load initiatives", http.StatusInternalServerError)
-		log.Printf("failed to load initiatives\n")
+		http.Error(w, "failed to load projects", http.StatusInternalServerError)
+		log.Printf("failed to load projects\n")
 		log.Printf("reason: %v\n", err)
 		return
 	}
@@ -156,11 +156,11 @@ func (app *App) initiatives(w http.ResponseWriter, r *http.Request) {
 	// render
 	// --
 
-	err = app.views.initiatives.RenderPage(html, lang, initiatives)
+	err = app.views.projects.RenderPage(html, lang, projects)
 
 	if err != nil {
-		http.Error(w, "failed to render initiatives", http.StatusInternalServerError)
-		log.Printf("failed to render initiatives\n")
+		http.Error(w, "failed to render projects", http.StatusInternalServerError)
+		log.Printf("failed to render projects\n")
 		log.Printf("reason: %v\n", err)
 		return
 	}

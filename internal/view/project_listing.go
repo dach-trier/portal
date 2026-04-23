@@ -12,9 +12,9 @@ import (
 	"github.com/dach-trier/template/html"
 )
 
-type InitiativeListing template.Template
+type ProjectListing template.Template
 
-func NewInitiativeListing(icons *Icons, bundle i18n.Bundle) *InitiativeListing {
+func NewProjectListing(icons *Icons, bundle i18n.Bundle) *ProjectListing {
 	var tmpl *template.Template
 
 	tmpl = template.New("")
@@ -26,21 +26,21 @@ func NewInitiativeListing(icons *Icons, bundle i18n.Bundle) *InitiativeListing {
 			"templates/graphics/dach-logo-simplified.html",
 			"templates/components/email-address.html",
 			"templates/layouts/base.html",
-			"templates/pages/initiative-listing.html",
+			"templates/pages/project-listing.html",
 		),
 	)
 
-	return (*InitiativeListing)(tmpl)
+	return (*ProjectListing)(tmpl)
 }
 
-func (projectListing *InitiativeListing) RenderPage(
+func (projectListing *ProjectListing) RenderPage(
 	w io.Writer,
 	lang language.Tag,
-	initiatives []model.TranslatedInitiativeWithThumbnail,
+	projects []model.LocalizedProjectWithThumbnail,
 ) error {
 	return (*template.Template)(projectListing).ExecuteTemplate(w, "layout.base", map[string]any{
-		"Title":       "DACH e.V. Trier",
-		"Lang":        lang,
-		"Initiatives": initiatives,
+		"Title":    "DACH e.V. Trier",
+		"Lang":     lang,
+		"Projects": projects,
 	})
 }

@@ -36,11 +36,11 @@ func NewHome(icons *Icons, localization i18n.Bundle) *Home {
 func (home *Home) RenderPage(
 	w io.Writer,
 	lang language.Tag,
-	initiatives []model.TranslatedInitiativeWithThumbnail,
+	projects []model.LocalizedProjectWithThumbnail,
 ) error {
 	return (*template.Template)(home).ExecuteTemplate(w, "layout.base", map[string]any{
-		"Title":       "DACH e.V. Trier",
-		"Lang":        lang,
-		"Initiatives": initiatives,
+		"Title":    "DACH e.V. Trier",
+		"Lang":     lang,
+		"Projects": projects,
 	})
 }

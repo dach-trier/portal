@@ -15,13 +15,13 @@
 <section
     class="relative grid container container-full h-62.5 xl:h-80 overflow-hidden xl:rounded"
     x-data="{ activeSlide: 0 }"
-    x-init="setInterval(() => activeSlide = (activeSlide + 1) % {{len .Initiatives}}, 5000)"
+    x-init="setInterval(() => activeSlide = (activeSlide + 1) % {{len .Projects}}, 5000)"
 >
     <div class="relative w-full h-full z-0 row-1 col-1 bg-gray-100">
-        {{range $index, $event := .Initiatives}}
-        {{if $event.Thumbnail}}
+        {{range $index, $project := .Projects}}
+        {{if $project.Thumbnail}}
         <img
-            src="{{$event.Thumbnail.Url}}"
+            src="{{$project.Thumbnail.Url}}"
             class="absolute top-0 left-0 w-full h-full object-cover"
             {{template "pages.home.banner.transition" (dict "Index" $index)}}
         />
@@ -32,12 +32,12 @@
     <div class="relative flex w-full h-full z-1 row-1 col-1 p-6">
         <div class="w-full flex justify-between items-center mt-auto">
             <div class="grid">
-                {{range $index, $event := .Initiatives}}
+                {{range $index, $project := .Projects}}
                 <label
                     class="w-fit row-1 col-1 font-medium text-2xl text-shadow-gray-600 text-shadow-lg text-white"
                     {{template "pages.home.banner.transition" (dict "Index" $index)}}
                 >
-                    {{$event.Name}}
+                    {{$project.Name}}
                 </label>
                 {{end}}
             </div>
@@ -101,7 +101,7 @@
               "Foreground"  "text-green-500"
               "Heading"     (t "Projects" .Lang)
               "Description" "The first Ukrainian school in Trier youth camp, art workshop, ..."
-              "Href"        "/initiatives?kind=project"
+              "Href"        "/projects"
               "Lang"        .Lang)
     }}
 
@@ -111,7 +111,7 @@
               "Foreground"  "text-amber-500"
               "Heading"     (t "Events" .Lang)
               "Description" "Concerts exhibitions, lectures, volunteer activities, ..."
-              "Href"        "/initiatives?kind=event"
+              "Href"        "/"
               "Lang"        .Lang)
     }}
 </section>

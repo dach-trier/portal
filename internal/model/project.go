@@ -4,7 +4,7 @@ import (
 	"html/template"
 )
 
-type TranslatedInitiativeWithThumbnail struct {
+type LocalizedProjectWithThumbnail struct {
 	ID          string
 	Thumbnail   *Image
 	Name        template.HTML

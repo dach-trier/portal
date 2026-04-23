@@ -9,10 +9,10 @@ import (
 	"github.com/dach-trier/portal/internal/query"
 )
 
-type InitiativeRepository interface {
-	ListTranslatedInitiativesWithThumbnail(
+type ProjectRepository interface {
+	ListLocalizedProjectsWithThumbnail(
 		ctx context.Context,
 		lang language.Tag,
 		cursor query.Cursor[string],
-	) ([]model.TranslatedInitiativeWithThumbnail, error)
+	) ([]model.LocalizedProjectWithThumbnail, error)
 }
