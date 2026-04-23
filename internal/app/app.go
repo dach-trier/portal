@@ -27,6 +27,7 @@ type App struct {
 	views        struct {
 		home     *view.Home
 		projects *view.ProjectListing
+		gallery  *view.Gallery
 	}
 }
 
@@ -45,6 +46,7 @@ func New(repos repo.Bundle) *App {
 
 	app.views.home = view.NewHome(icons, app.localization)
 	app.views.projects = view.NewProjectListing(icons, app.localization)
+	app.views.gallery = view.NewGallery(icons, app.localization)
 
 	return app
 }
@@ -79,6 +81,7 @@ func (app *App) Router() http.Handler {
 	router.Get("/assets/*", http.StripPrefix("/assets/", assets).ServeHTTP)
 	router.Get("/", app.home)
 	router.Get("/projects", app.projects)
+	router.Get("/gallery", app.gallery)
 
 	return router
 }
@@ -157,6 +160,32 @@ func (app *App) projects(w http.ResponseWriter, r *http.Request) {
 	// --
 
 	err = app.views.projects.RenderPage(html, lang, projects)
+
+	if err != nil {
+		http.Error(w, "failed to render projects", http.StatusInternalServerError)
+		log.Printf("failed to render projects\n")
+		log.Printf("reason: %v\n", err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html;charset=utf-8")
+	w.Header().Set("Content-Length", strconv.Itoa(html.Len()))
+	w.WriteHeader(http.StatusOK)
+
+	_, err = html.WriteTo(w)
+
+	if err != nil {
+		log.Printf("failed writing response\n")
+		log.Printf("reason: %v\n", err)
+		return
+	}
+}
+
+func (app *App) gallery(w http.ResponseWriter, r *http.Request) {
+	html := bytes.NewBuffer(make([]byte, 0, 1024))
+	lang := r.Context().Value("lang").(language.Tag)
+
+	err := app.views.gallery.RenderPage(html, lang)
 
 	if err != nil {
 		http.Error(w, "failed to render projects", http.StatusInternalServerError)
