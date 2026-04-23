@@ -1,10 +1,14 @@
 {{define "layout.base.main"}}
-<main class="mt-15 mb-30 container container-gutter">
+<main class="mt-12 mb-30 container container-gutter">
     <h1 class="text-xl">
         {{t "Projects" .Lang}}
     </h1>
 
-    <section class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+    <p class="italic text-lg mt-1">
+        {{t "A selection of initiatives that bring people together and help our community grow" .Lang}}
+    </p>
+
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
         {{range .Projects}}
         <div class="flex flex-col gap-6">
             <div class="flex-none w-full h-55 bg-gray-100 rounded overflow-hidden">
@@ -24,6 +28,6 @@
             </div>
         </div>
         {{end}}
-    </section>
+    </div>
 </main>
 {{end}}
