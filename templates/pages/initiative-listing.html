@@ -1,7 +1,7 @@
-{{define "layout.base.content"}}
-<section class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8">
+{{define "layout.base.main"}}
+<section class="mt-6 mb-20 container container-gutter grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
     {{range .Initiatives}}
-    <div class="flex flex-col gap-6 mb-10">
+    <div class="flex flex-col gap-6">
         <div class="flex-none w-full h-55 bg-gray-100 rounded overflow-hidden">
             {{if .Thumbnail}}
             <img src="{{.Thumbnail.Url}}" class="w-full h-full object-cover flex-none" />

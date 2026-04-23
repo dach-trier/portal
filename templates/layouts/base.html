@@ -1,3 +1,5 @@
+<!-- layout -->
+
 {{define "layout.base"}}
 <!doctype html>
 <html lang="{{.Lang}}">
@@ -15,98 +17,118 @@
         <link rel="stylesheet" href="assets/styles.css?timestamp={{now}}" />
         {{end}}
     </head>
+
     <body ontouchstart="">
         {{template "layout.base.header" .}}
-        {{template "layout.base.content" .}}
+        {{template "layout.base.main"   .}}
         {{template "layout.base.footer" .}}
     </body>
 </html>
 {{end}}
 
+<!-- header -->
+
 {{define "layout.base.header"}}
-<header class="sticky z-10 top-0 w-screen h-14.5 bg-white">
-    <div class="w-[calc(100vw-42px)] max-w-300 mx-auto h-full flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            {{template "graphics.dach-logo-simplified" (htmlAttributes "class" "w-8")}}
-            <h4>{{.Title}}</h4>
+<header class="sticky z-10 top-0 w-screen px-4 bg-white border-b-gray-950/5 border-b">
+    <div class="w-[calc(100vw-42px)] max-w-300 mx-auto">
+        <div class="w-full py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                {{template "graphics.dach-logo-simplified" (htmlAttributes "class" "w-8")}}
+                <h4>{{.Title}}</h4>
+            </div>
         </div>
     </div>
 </header>
 {{end}}
 
+<!-- footer -->
+
 {{define "layout.base.footer"}}
-<footer class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-8">
-    <div class="flex flex-col gap-5 md:grid md:justify-between md:gap-y-5 md:gap-x-0">
-        <div class="w-full h-0.5 bg-black md:col-span-3"></div>
+<footer class="w-full flex flex-col gap-8 pt-6 pb-4 bg-white border-gray-950/5 border-t">
+    {{template "layout.base.footer.links"     .}}
+    {{template "layout.base.footer.copyright" .}}
+</footer>
+{{end}}
 
-        <div class="flex flex-col gap-5">
-            <h4>{{t "Contact" .Lang}}</h4>
+{{define "layout.base.footer.links"}}
+<section
+    class="
+        w-[calc(100vw-42px)] max-w-300 mx-auto
+        flex flex-col
+
+        md:grid
+        md:grid-flow-col
+        md:auto-cols-auto
+        md:justify-between
+
+           gap-5
+        md:gap-y-5
+        md:gap-x-0
+    "
+>
+    <div class="flex flex-col gap-5">
+        <h4>{{t "Contact" .Lang}}</h4>
+
+        <div class="flex flex-col gap-2">
+            {{template "components.email-address"
+                (dict "Lang"         .Lang
+                      "Size"         "normal"
+                      "EmailAddress" "info@dach-trier.com")
+            }}
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-5">
+        <h4>{{t "Socials" .Lang}}</h4>
+
+        <div class="row-3 flex flex-col gap-2">
+            {{template "layout.base.footer.link"
+                (dict "Icon"  "instagram"
+                      "Label" "Instagram"
+                      "Href"  "https://www.instagram.com/dach_ukr_de")
+            }}
+
+            {{template "layout.base.footer.link"
+                (dict "Icon"  "facebook"
+                      "Label" "Facebook"
+                      "Href"  "https://www.facebook.com/DACH.ukr.de")
+            }}
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-5">
+        <h4>{{t "Legal" .Lang}}</h4>
+
+        <div class="flex flex-col gap-2">
+            {{template "layout.base.footer.link"
+                (dict "Icon"  "document"
+                      "Label" (t "Charter" .Lang)
+                      "Href"  "https://public.dach-trier.com/1jjHQUrTbQJAWEl3c9Mfs9o1YAZpwQLwI")
+            }}
 
             <div class="flex flex-col gap-2">
-                {{template "components.email-address"
-                    (dict "Lang"         .Lang
-                          "Size"         "normal"
-                          "EmailAddress" "info@dach-trier.com")
-                }}
-            </div>
-        </div>
+                <div class="flex gap-2 select-none">
+                    {{icon "thumbs-up" (htmlAttributes "class" "w-4")}}
+                    {{t "Recommendations" .Lang}}
+                </div>
 
-        <div class="flex flex-col gap-5">
-            <h4>{{t "Socials" .Lang}}</h4>
+                <div class="list-disc flex flex-col gap-1 pl-6">
+                    {{template "layout.base.footer.link"
+                        (dict "Icon"  "document"
+                              "Label" "Stadtverwaltung Trier"
+                              "Href"  "https://public.dach-trier.com/1DbdagGXSb-5apvCzfMeRZAP8Ur8cofoG")
+                    }}
 
-            <div class="row-3 flex flex-col gap-2">
-                {{template "layout.base.footer.link"
-                    (dict "Icon"  "instagram"
-                          "Label" "Instagram"
-                          "Href"  "https://www.instagram.com/dach_ukr_de")
-                }}
-
-                {{template "layout.base.footer.link"
-                    (dict "Icon"  "facebook"
-                          "Label" "Facebook"
-                          "Href"  "https://www.facebook.com/DACH.ukr.de")
-                }}
-            </div>
-        </div>
-
-        <div class="flex flex-col gap-5">
-            <h4>{{t "Legal" .Lang}}</h4>
-
-            <div class="flex flex-col gap-2">
-                {{template "layout.base.footer.link"
-                    (dict "Icon"  "document"
-                          "Label" (t "Charter" .Lang)
-                          "Href"  "https://public.dach-trier.com/1jjHQUrTbQJAWEl3c9Mfs9o1YAZpwQLwI")
-                }}
-
-                <div class="flex flex-col gap-2">
-                    <div class="flex gap-2 select-none">
-                        {{icon "thumbs-up" (htmlAttributes "class" "w-4")}}
-                        {{t "Recommendations" .Lang}}
-                    </div>
-
-                    <div class="list-disc flex flex-col gap-1 pl-6">
-                        {{template "layout.base.footer.link"
-                            (dict "Icon"  "document"
-                                  "Label" "Stadtverwaltung Trier"
-                                  "Href"  "https://public.dach-trier.com/1DbdagGXSb-5apvCzfMeRZAP8Ur8cofoG")
-                        }}
-
-                        {{template "layout.base.footer.link"
-                            (dict "Icon"  "document"
-                                  "Label" "Trier Tourismus und Marketing"
-                                  "Href"  "https://public.dach-trier.com/11K_yNOuA0hZF5qKZR0el96ieGQ_erZzv")
-                        }}
-                    </div>
+                    {{template "layout.base.footer.link"
+                        (dict "Icon"  "document"
+                              "Label" "Trier Tourismus und Marketing"
+                              "Href"  "https://public.dach-trier.com/11K_yNOuA0hZF5qKZR0el96ieGQ_erZzv")
+                    }}
                 </div>
             </div>
         </div>
-
-        <label class="my-5 md:my-10 row-4 md:col-span-3 text-center">
-            {{t "(c) %s DACH e.V. Trier. All rights reserved" .Lang (currentYear)}}
-        </label>
     </div>
-</footer>
+</section>
 {{end}}
 
 {{define "layout.base.footer.link"}}
@@ -123,4 +145,12 @@
 
     <span class="group-hover:text-gray-500 group-active:text-gray-400">{{.Label}}</span>
 </div>
+{{end}}
+
+{{define "layout.base.footer.copyright"}}
+<section class="w-full flex justify-center items-center">
+    <label class="text-center">
+        {{t "(c) %s DACH e.V. Trier. All rights reserved" .Lang (currentYear)}}
+    </label>
+</section>
 {{end}}

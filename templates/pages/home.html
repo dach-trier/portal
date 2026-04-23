@@ -1,41 +1,45 @@
-{{define "layout.base.content"}}
-{{template "pages.home.banner" .}}
-{{template "pages.home.hero" .}}
+<!-- layout -->
+
+{{define "layout.base.main"}}
+<main class="xl:mt-6 mb-10">
+{{template "pages.home.banner"     .}}
+{{template "pages.home.hero"       .}}
 {{template "pages.home.navigation" .}}
-{{template "pages.home.contact" .}}
+{{template "pages.home.contact"    .}}
+</main>
 {{end}}
 
-{{define "pages.home.banner"}}
-<section class="w-full max-w-300 mx-auto h-62.5 xl:h-100 xl:rounded overflow-hidden">
-    <div
-        class="relative grid w-full h-full"
-        x-data="{ activeSlide: 0 }"
-        x-init="setInterval(() => activeSlide = (activeSlide + 1) % {{len .Initiatives}}, 5000)"
-    >
-        <div class="relative w-full h-full z-0 row-1 col-1 bg-gray-100">
-            {{range $index, $event := .Initiatives}}
-            {{if $event.Thumbnail}}
-            <img
-                src="{{$event.Thumbnail.Url}}"
-                class="absolute top-0 left-0 w-full h-full object-cover"
-                {{template "pages.home.banner.transition" (dict "Index" $index)}}
-            />
-            {{end}}
-            {{end}}
-        </div>
+<!-- banner -->
 
-        <div class="relative flex w-full h-full z-1 row-1 col-1 p-6">
-            <div class="w-full flex justify-between items-center mt-auto">
-                <div class="grid">
-                    {{range $index, $event := .Initiatives}}
-                    <label
-                        class="w-fit row-1 col-1 font-medium text-2xl text-shadow-gray-600 text-shadow-lg text-white"
-                        {{template "pages.home.banner.transition" (dict "Index" $index)}}
-                    >
-                        {{$event.Name}}
-                    </label>
-                    {{end}}
-                </div>
+{{define "pages.home.banner"}}
+<section
+    class="relative grid container container-full h-62.5 xl:h-80 overflow-hidden xl:rounded"
+    x-data="{ activeSlide: 0 }"
+    x-init="setInterval(() => activeSlide = (activeSlide + 1) % {{len .Initiatives}}, 5000)"
+>
+    <div class="relative w-full h-full z-0 row-1 col-1 bg-gray-100">
+        {{range $index, $event := .Initiatives}}
+        {{if $event.Thumbnail}}
+        <img
+            src="{{$event.Thumbnail.Url}}"
+            class="absolute top-0 left-0 w-full h-full object-cover"
+            {{template "pages.home.banner.transition" (dict "Index" $index)}}
+        />
+        {{end}}
+        {{end}}
+    </div>
+
+    <div class="relative flex w-full h-full z-1 row-1 col-1 p-6">
+        <div class="w-full flex justify-between items-center mt-auto">
+            <div class="grid">
+                {{range $index, $event := .Initiatives}}
+                <label
+                    class="w-fit row-1 col-1 font-medium text-2xl text-shadow-gray-600 text-shadow-lg text-white"
+                    {{template "pages.home.banner.transition" (dict "Index" $index)}}
+                >
+                    {{$event.Name}}
+                </label>
+                {{end}}
             </div>
         </div>
     </div>
@@ -53,8 +57,10 @@
     "x-transition:leave-end" "opacity-0"}}
 {{end}}
 
+<!-- hero -->
+
 {{define "pages.home.hero"}}
-<section class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-6 flex flex-col gap-5 md:flex-row md:justify-between md:gap-10">
+<section class="mt-6 container container-gutter flex flex-col gap-5 md:flex-row md:justify-between md:gap-10">
     <h1 class="text-2xl leading-9">
         {{t "Ukrainian-German Association" .Lang}}
     </h1>
@@ -85,39 +91,35 @@
 </section>
 {{end}}
 
+<!-- navigation -->
+
 {{define "pages.home.navigation"}}
-<section class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-20">
-    <h1 class="text-2xl col-span-full">
-        {{t "Our Initiatives" .Lang}}
-    </h1>
+<section class="mt-12 container container-gutter grid gap-10 grid-cols-1 md:grid-cols-2">
+    {{template "pages.home.navigation.card"
+        (dict "Icon"        "project"
+              "Background"  "bg-green-100"
+              "Foreground"  "text-green-500"
+              "Heading"     (t "Projects" .Lang)
+              "Description" "The first Ukrainian school in Trier youth camp, art workshop, ..."
+              "Href"        "/initiatives?kind=project"
+              "Lang"        .Lang)
+    }}
 
-    <div class="grid gap-10 grid-cols-1 md:grid-cols-2 mt-5">
-        {{template "pages.home.navigation.card"
-            (dict "Icon"        "project"
-                  "Background"  "bg-green-100"
-                  "Foreground"  "text-green-500"
-                  "Heading"     (t "Projects" .Lang)
-                  "Description" "The first Ukrainian school in Trier youth camp, art workshop, ..."
-                  "Href"        "/initiatives?kind=project"
-                  "Lang"        .Lang)
-        }}
-
-        {{template "pages.home.navigation.card"
-            (dict "Icon"        "event"
-                  "Background"  "bg-amber-100"
-                  "Foreground"  "text-amber-500"
-                  "Heading"     (t "Events" .Lang)
-                  "Description" "Concerts exhibitions, lectures, volunteer activities, ..."
-                  "Href"        "/initiatives?kind=event"
-                  "Lang"        .Lang)
-        }}
-    </div>
+    {{template "pages.home.navigation.card"
+        (dict "Icon"        "event"
+              "Background"  "bg-amber-100"
+              "Foreground"  "text-amber-500"
+              "Heading"     (t "Events" .Lang)
+              "Description" "Concerts exhibitions, lectures, volunteer activities, ..."
+              "Href"        "/initiatives?kind=event"
+              "Lang"        .Lang)
+    }}
 </section>
 {{end}}
 
 {{define "pages.home.navigation.card"}}
-<div class="w-full flex flex-col lg:flex-row gap-8 p-6 border border-gray-200 rounded even:justify-self-end">
-    <div class="row-span-2 w-28 min-w-28 h-28 min-h-28 rounded border border-gray-200 flex justify-center items-center {{.Background}} {{.Foreground}}">
+<div class="w-full flex flex-col lg:flex-row gap-8 p-6 border border-gray-950/5 bg-white rounded even:justify-self-end">
+    <div class="row-span-2 w-28 min-w-28 h-28 min-h-28 rounded border border-gray-950/5 flex justify-center items-center {{.Background}} {{.Foreground}}">
         {{icon .Icon (htmlAttributes "class" "w-20 h-20")}}
     </div>
 
@@ -137,10 +139,12 @@
 </div>
 {{end}}
 
+<!-- contact -->
+
 {{define "pages.home.contact"}}
 <section
     id="pages.home.contact"
-    class="w-[calc(100vw-42px)] max-w-300 mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 scroll-mt-20"
+    class="mt-12 container container-gutter grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 scroll-mt-20"
 >
     <div class="flex flex-col gap-5">
         <h1 class="font-semibold text-2xl">
