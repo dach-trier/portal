@@ -1,15 +1,13 @@
 -- name: ListTranslatedInitiatives :many
 SELECT
     i.id,
-    i.kind,
     t.name,
     t.description
 FROM initiatives i
 LEFT JOIN initiative_translations t
     ON  t.initiative_id = i.id
     AND t.lang = $1
-WHERE (i.kind = sqlc.arg(kind)   OR sqlc.arg (kind)  =  '')
-  AND (i.id   > sqlc.narg(after) OR sqlc.narg(after) IS NULL)
+WHERE (i.id > sqlc.narg(after) OR sqlc.narg(after) IS NULL)
 ORDER BY i.id ASC
 LIMIT $2;
 

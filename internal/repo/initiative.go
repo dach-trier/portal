@@ -13,7 +13,6 @@ type InitiativeRepository interface {
 	ListTranslatedInitiativesWithThumbnail(
 		ctx context.Context,
 		lang language.Tag,
-		filter query.InitiativeFilter,
 		cursor query.Cursor[string],
 	) ([]model.TranslatedInitiativeWithThumbnail, error)
 }

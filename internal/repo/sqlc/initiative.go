@@ -20,7 +20,6 @@ func NewInitiativeRepository(db sqlc.DBTX) *InitiativeRepository {
 func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 	ctx context.Context,
 	lang language.Tag,
-	filter query.InitiativeFilter,
 	cursor query.Cursor[string],
 ) ([]model.TranslatedInitiativeWithThumbnail, error) {
 	queries := (*sqlc.Queries)(repo)
@@ -34,7 +33,6 @@ func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 
 	params.Lang = lang.String()
 	params.Limit = int32(cursor.Limit)
-	params.Kind = filter.Kind
 
 	if cursor.After != nil {
 		params.After.String = *cursor.After
@@ -53,7 +51,6 @@ func (repo *InitiativeRepository) ListTranslatedInitiativesWithThumbnail(
 		initiative := model.TranslatedInitiativeWithThumbnail{}
 
 		initiative.ID = row.ID
-		initiative.Kind = row.Kind
 		initiative.Name = template.HTML(row.Name.String)
 		initiative.Description = template.HTML(row.Description.String)
 

@@ -91,14 +91,10 @@ func (app *App) home(w http.ResponseWriter, r *http.Request) {
 	// load initiatives
 	// --
 
-	filter := query.InitiativeFilter{}
-	cursor := query.Cursor[string]{Limit: math.MaxInt32}
-
 	initiatives, err := app.repos.Initiatives.ListTranslatedInitiativesWithThumbnail(
 		context.Background(),
 		lang,
-		filter,
-		cursor,
+		query.Cursor[string]{Limit: math.MaxInt32},
 	)
 
 	if err != nil {
@@ -137,21 +133,16 @@ func (app *App) home(w http.ResponseWriter, r *http.Request) {
 func (app *App) initiatives(w http.ResponseWriter, r *http.Request) {
 	html := bytes.NewBuffer(make([]byte, 0, 1024))
 	lang := r.Context().Value("lang").(language.Tag)
-	kind := r.URL.Query().Get("kind")
 	// after := r.URL.Query().Get("after")
 
 	// --
 	// load initiatives
 	// --
 
-	filter := query.InitiativeFilter{Kind: kind}
-	cursor := query.Cursor[string]{Limit: math.MaxInt32}
-
 	initiatives, err := app.repos.Initiatives.ListTranslatedInitiativesWithThumbnail(
 		context.Background(),
 		lang,
-		filter,
-		cursor,
+		query.Cursor[string]{Limit: math.MaxInt32},
 	)
 
 	if err != nil {
