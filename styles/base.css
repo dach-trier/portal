@@ -15,3 +15,16 @@
         display: none !important;
     }
 }
+
+@utility container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+@utility container-full {
+    width: 100%;
+}
+
+@utility container-gutter {
+    width: calc(100% - 42px);
+}
