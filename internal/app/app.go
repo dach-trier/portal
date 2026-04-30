@@ -94,10 +94,10 @@ func (app *App) home(w http.ResponseWriter, r *http.Request) {
 	// load projects
 	// --
 
-	projects, err := app.repos.Projects.ListLocalizedProjectsWithThumbnail(
+	projects, err := app.repos.Projects.ListTranslatedProjectsWithThumbnail(
 		context.Background(),
 		lang,
-		query.Cursor[string]{Limit: math.MaxInt32},
+		query.Cursor[int64]{Limit: math.MaxInt32},
 	)
 
 	if err != nil {
@@ -142,10 +142,10 @@ func (app *App) projects(w http.ResponseWriter, r *http.Request) {
 	// load projects
 	// --
 
-	projects, err := app.repos.Projects.ListLocalizedProjectsWithThumbnail(
+	projects, err := app.repos.Projects.ListTranslatedProjectsWithThumbnail(
 		context.Background(),
 		lang,
-		query.Cursor[string]{Limit: math.MaxInt32},
+		query.Cursor[int64]{Limit: math.MaxInt32},
 	)
 
 	if err != nil {

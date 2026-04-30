@@ -36,7 +36,7 @@ func NewHome(icons *Icons, localization i18n.Bundle) *Home {
 func (home *Home) RenderPage(
 	w io.Writer,
 	lang language.Tag,
-	projects []model.LocalizedProjectWithThumbnail,
+	projects []model.TranslatedProjectWithThumbnail,
 ) error {
 	return (*template.Template)(home).ExecuteTemplate(w, "layout.base", map[string]any{
 		"Title":    "DACH e.V. Trier",

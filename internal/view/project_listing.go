@@ -36,7 +36,7 @@ func NewProjectListing(icons *Icons, bundle i18n.Bundle) *ProjectListing {
 func (projectListing *ProjectListing) RenderPage(
 	w io.Writer,
 	lang language.Tag,
-	projects []model.LocalizedProjectWithThumbnail,
+	projects []model.TranslatedProjectWithThumbnail,
 ) error {
 	return (*template.Template)(projectListing).ExecuteTemplate(w, "layout.base", map[string]any{
 		"Title":    "DACH e.V. Trier",

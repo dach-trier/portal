@@ -10,9 +10,9 @@ import (
 )
 
 type ProjectRepository interface {
-	ListLocalizedProjectsWithThumbnail(
+	ListTranslatedProjectsWithThumbnail(
 		ctx context.Context,
 		lang language.Tag,
-		cursor query.Cursor[string],
-	) ([]model.LocalizedProjectWithThumbnail, error)
+		cursor query.Cursor[int64],
+	) ([]model.TranslatedProjectWithThumbnail, error)
 }

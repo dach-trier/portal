@@ -17,13 +17,13 @@ func NewProjectRepository(db sqlc.DBTX) *ProjectRepository {
 	return (*ProjectRepository)(sqlc.New(db))
 }
 
-func (repo *ProjectRepository) ListLocalizedProjectsWithThumbnail(
+func (repo *ProjectRepository) ListTranslatedProjectsWithThumbnail(
 	ctx context.Context,
 	lang language.Tag,
-	cursor query.Cursor[string],
-) ([]model.LocalizedProjectWithThumbnail, error) {
+	cursor query.Cursor[int64],
+) ([]model.TranslatedProjectWithThumbnail, error) {
 	queries := (*sqlc.Queries)(repo)
-	projects := []model.LocalizedProjectWithThumbnail{}
+	projects := []model.TranslatedProjectWithThumbnail{}
 
 	// --
 	// project ids
@@ -33,7 +33,7 @@ func (repo *ProjectRepository) ListLocalizedProjectsWithThumbnail(
 	listProjectsParams.Limit = int32(cursor.Limit)
 
 	if cursor.After != nil {
-		listProjectsParams.After.String = *cursor.After
+		listProjectsParams.After.Int64 = *cursor.After
 		listProjectsParams.After.Valid = true
 	}
 
@@ -46,35 +46,37 @@ func (repo *ProjectRepository) ListLocalizedProjectsWithThumbnail(
 	//
 
 	for _, id := range result {
-		project := model.LocalizedProjectWithThumbnail{ID: id}
+		project := model.TranslatedProjectWithThumbnail{ID: id}
 
 		// --
 		// localization
 		// --
 
-		getProjectLocalizationParams := sqlc.GetProjectLocalizationParams{}
+		getProjectLocalizationParams := sqlc.GetProjectTranslationParams{}
 		getProjectLocalizationParams.ProjectID = id
 		getProjectLocalizationParams.Lang = lang.String()
 
-		localization, err := queries.GetProjectLocalization(ctx, getProjectLocalizationParams)
+		localization, err := queries.GetProjectTranslation(ctx, getProjectLocalizationParams)
 
 		if err != nil {
 			return nil, err
 		}
 
 		project.Name = template.HTML(localization.Name.String)
-		project.Description = template.HTML(localization.Description.String)
+		project.Body = template.HTML(localization.Body.String)
 
 		// --
 		// thumbnail
 		// --
 
-		listProjectImagesParams := sqlc.ListProjectImagesParams{
-			ProjectID: id,
-			Limit:     1,
-		}
+		listProjectImagesParams := sqlc.ListProjectAssetsParams{}
 
-		result, err := queries.ListProjectImages(ctx, listProjectImagesParams)
+		listProjectImagesParams.ProjectID = id
+		listProjectImagesParams.Limit = 1
+		listProjectImagesParams.Type.String = "image"
+		listProjectImagesParams.Type.Valid = true
+
+		result, err := queries.ListProjectAssets(ctx, listProjectImagesParams)
 
 		if err != nil {
 			return nil, err
@@ -82,9 +84,10 @@ func (repo *ProjectRepository) ListLocalizedProjectsWithThumbnail(
 
 		if len(result) > 0 {
 			project.Thumbnail =
-				&model.Image{
-					ID:  result[0].ID,
-					Url: result[0].Url,
+				&model.Asset{
+					ID:   result[0].ID,
+					Type: result[0].Type,
+					Url:  result[0].Url,
 				}
 		}
 

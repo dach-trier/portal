@@ -4,9 +4,9 @@ import (
 	"html/template"
 )
 
-type LocalizedProjectWithThumbnail struct {
-	ID          string
-	Thumbnail   *Image
-	Name        template.HTML
-	Description template.HTML
+type TranslatedProjectWithThumbnail struct {
+	ID        int64
+	Thumbnail *Asset
+	Name      template.HTML
+	Body      template.HTML
 }
